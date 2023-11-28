@@ -68,9 +68,6 @@
     <script>
 
         $(document).ready(function () {
-        let location = ""
-        let city = ""
-        let state_zip_code = ""
             CustomElement.init((element, _context) => {
 
                 const input = document.getElementById("pac-input");
@@ -78,10 +75,13 @@
                 CustomElement.getElementValue("location", (value) => {
                     console.log("location")
                     console.log(value)
-                    location = value
+                    input.value = value
                 });
                 CustomElement.getElementValue("city", (value) => {
-                    city = value
+                    
+                    console.log("city")
+                    console.log(value)
+                    input.value = input.value + ", " + value
                 });
                 CustomElement.getElementValue("state_zip_code", (value) => {
                     state_zip_code = value
@@ -105,8 +105,6 @@
                     });
                 });
 
-                console.log("location2")
-                input.value = location + ", " + city + ", " + state_zip_code
                 googleMaps();
                 updateSize();
 
