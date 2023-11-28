@@ -71,18 +71,6 @@
                 updateSize();
                 getData()
 
-                CustomElement.observeElementChanges(["location"], (changedElementCodenames) => {
-                    getData()
-                });
-
-                CustomElement.observeElementChanges(["city"], (changedElementCodenames) => {
-                    getData()
-                });
-
-                CustomElement.observeElementChanges(["state_zip_code"], (changedElementCodenames) => {
-                    getData()
-                });
-
             });
         });
 
