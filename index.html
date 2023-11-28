@@ -70,9 +70,9 @@
             CustomElement.init((element, _context) => {
 
                 const input = document.getElementById("pac-input");
-                const location = ""
-                const city = ""
-                const state_zip_code = ""
+                let location = ""
+                let city = ""
+                let state_zip_code = ""
 
                 CustomElement.getElementValue("location", (value) => {
                     console.log("location")
