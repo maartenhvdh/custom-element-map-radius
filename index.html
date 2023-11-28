@@ -110,20 +110,6 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(canvas, mapOptions);
-            var request = {
-    query: input.value,
-    fields: ['name', 'geometry'],
-  };
-            var service = new google.maps.places.PlacesService(map);
-
-            service.findPlaceFromQuery(request, function(results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                for (var i = 0; i < results.length; i++) {
-                    createMarker(results[i]);
-                }
-                map.setCenter(results[0].geometry.location);
-                }
-            });
 
             // Create the search box and link it to the UI element.
             const searchBox = new google.maps.places.SearchBox(input);
