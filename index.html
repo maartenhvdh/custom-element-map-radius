@@ -34,6 +34,21 @@
             width: 700px;
             border: 1px solid black;
         }
+
+        #pac-input {
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            margin-left: 12px;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 400px;
+        }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
     </style>
 </head>
 
@@ -53,8 +68,49 @@
     <script>
         $(document).ready(function () {
             CustomElement.init((element, _context) => {
-                updateSize();
-                config = element.config || {};
+
+                const input = document.getElementById("pac-input");
+                const location = ""
+                const city = ""
+                const state_zip_code = ""
+
+                CustomElement.getElementValue("location", (value) => {
+                    location = value
+                });
+                CustomElement.getElementValue("city", (value) => {
+                    city = value
+                });
+                CustomElement.getElementValue("state_zip_code", (value) => {
+                    state_zip_code = value
+                });
+
+                CustomElement.observeElementChanges(["location"], (changedElementCodenames) => {
+                    CustomElement.getElementValue("location", (value) => {                    
+                        location = value
+                    });
+                });
+
+                CustomElement.observeElementChanges(["city"], (changedElementCodenames) => {
+                    CustomElement.getElementValue("city", (value) => {                    
+                        city = value
+                    });
+                });
+
+                CustomElement.observeElementChanges(["state_zip_code"], (changedElementCodenames) => {
+                    CustomElement.getElementValue("state_zip_code", (value) => {                    
+                        state_zip_code = value
+                    });
+                });
+
+                input.value = locations + ", " + city + ", " + state_zip_code     
+                googleMaps();
+                updateSize();                
+
+            });
+        });
+
+        function googleMaps() {
+            config = element.config || {};
                 var canvas = document.getElementById('map-canvas');
                 var myLatlng = new google.maps.LatLng(47.2389004, 8.7442319, 15);
 
@@ -154,9 +210,7 @@
                 }
 
                 update();
-
-            });
-        });
+        }
 
         function updateSize() {
             // Updates the custom element height in Kontent.ai.
