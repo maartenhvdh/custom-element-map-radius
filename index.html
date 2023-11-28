@@ -73,18 +73,16 @@
                 const input = document.getElementById("pac-input");
 
                 CustomElement.getElementValue("location", (value) => {
-                    console.log("location")
-                    console.log(value)
                     input.value = value
                 });
                 CustomElement.getElementValue("city", (value) => {
-                    
-                    console.log("city")
-                    console.log(value)
                     input.value = input.value + ", " + value
                 });
                 CustomElement.getElementValue("state_zip_code", (value) => {
-                    state_zip_code = value
+                    input.value = input.value + ", " + value
+
+                    googleMaps();
+                    updateSize();
                 });
 
                 CustomElement.observeElementChanges(["location"], (changedElementCodenames) => {
@@ -104,9 +102,6 @@
                         state_zip_code = value
                     });
                 });
-
-                googleMaps();
-                updateSize();
 
             });
         });
