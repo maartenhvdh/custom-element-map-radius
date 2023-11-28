@@ -68,7 +68,6 @@
 
         $(document).ready(function () {
             CustomElement.init((element, _context) => {
-                googleMaps();
                 updateSize();
                 getData()
 
@@ -96,8 +95,8 @@
                 input.value = input.value + ", " + value
             });
             CustomElement.getElementValue("state_zip_code", (value) => {
-                input.value = input.value + ", " + value
-                google.maps.event.trigger(input, 'place_changed');
+                input.value = input.value + ", " + value                
+                googleMaps();
             });
         }
 
@@ -114,6 +113,7 @@
 
             // Create the search box and link it to the UI element.
             const input = document.getElementById("pac-input");
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
             const searchBox = new google.maps.places.SearchBox(input);
 
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
