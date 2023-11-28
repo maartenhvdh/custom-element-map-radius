@@ -80,26 +80,49 @@
                 });
                 CustomElement.getElementValue("state_zip_code", (value) => {
                     input.value = input.value + ", " + value
-
                     googleMaps();
                     updateSize();
                 });
 
                 CustomElement.observeElementChanges(["location"], (changedElementCodenames) => {
                     CustomElement.getElementValue("location", (value) => {
-                        location = value
+                        input.value = value
+                    });
+                    CustomElement.getElementValue("city", (value) => {
+                        input.value = input.value + ", " + value
+                    });
+                    CustomElement.getElementValue("state_zip_code", (value) => {
+                        input.value = input.value + ", " + value
+                        googleMaps();
+                        updateSize();
                     });
                 });
 
                 CustomElement.observeElementChanges(["city"], (changedElementCodenames) => {
+                    CustomElement.getElementValue("location", (value) => {
+                        input.value = value
+                    });
                     CustomElement.getElementValue("city", (value) => {
-                        city = value
+                        input.value = input.value + ", " + value
+                    });
+                    CustomElement.getElementValue("state_zip_code", (value) => {
+                        input.value = input.value + ", " + value
+                        googleMaps();
+                        updateSize();
                     });
                 });
 
                 CustomElement.observeElementChanges(["state_zip_code"], (changedElementCodenames) => {
+                    CustomElement.getElementValue("location", (value) => {
+                        input.value = value
+                    });
+                    CustomElement.getElementValue("city", (value) => {
+                        input.value = input.value + ", " + value
+                    });
                     CustomElement.getElementValue("state_zip_code", (value) => {
-                        state_zip_code = value
+                        input.value = input.value + ", " + value
+                        googleMaps();
+                        updateSize();
                     });
                 });
 
