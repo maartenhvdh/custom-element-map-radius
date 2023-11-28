@@ -65,62 +65,47 @@
     </div>
 
     <script>
+        const event = new KeyboardEvent('keydown', {
+            key: 'Enter',
+            code: 'Enter',
+            which: 13,
+            keyCode: 13,
+        });
 
         $(document).ready(function () {
             CustomElement.init((element, _context) => {
-                
                 googleMaps();
-                        updateSize();
-                const input = document.getElementById("pac-input");
-
-                CustomElement.getElementValue("location", (value) => {
-                    input.value = value
-                });
-                CustomElement.getElementValue("city", (value) => {
-                    input.value = input.value + ", " + value
-                });
-                CustomElement.getElementValue("state_zip_code", (value) => {
-                    input.value = input.value + ", " + value
-                });
+                updateSize();
+                getData()
 
                 CustomElement.observeElementChanges(["location"], (changedElementCodenames) => {
-                    CustomElement.getElementValue("location", (value) => {
-                        input.value = value
-                    });
-                    CustomElement.getElementValue("city", (value) => {
-                        input.value = input.value + ", " + value
-                    });
-                    CustomElement.getElementValue("state_zip_code", (value) => {
-                        input.value = input.value + ", " + value
-                    });
+                    getData()
                 });
 
                 CustomElement.observeElementChanges(["city"], (changedElementCodenames) => {
-                    CustomElement.getElementValue("location", (value) => {
-                        input.value = value
-                    });
-                    CustomElement.getElementValue("city", (value) => {
-                        input.value = input.value + ", " + value
-                    });
-                    CustomElement.getElementValue("state_zip_code", (value) => {
-                        input.value = input.value + ", " + value
-                    });
+                    getData()
                 });
 
                 CustomElement.observeElementChanges(["state_zip_code"], (changedElementCodenames) => {
-                    CustomElement.getElementValue("location", (value) => {
-                        input.value = value
-                    });
-                    CustomElement.getElementValue("city", (value) => {
-                        input.value = input.value + ", " + value
-                    });
-                    CustomElement.getElementValue("state_zip_code", (value) => {
-                        input.value = input.value + ", " + value
-                    });
+                    getData()
                 });
 
             });
         });
+
+        function getData() {
+            const input = document.getElementById("pac-input");
+            CustomElement.getElementValue("location", (value) => {
+                input.value = value
+            });
+            CustomElement.getElementValue("city", (value) => {
+                input.value = input.value + ", " + value
+            });
+            CustomElement.getElementValue("state_zip_code", (value) => {
+                input.value = input.value + ", " + value
+            });
+            input.dispatchEvent(event);
+        }
 
         function googleMaps() {
             var canvas = document.getElementById('map-canvas');
@@ -218,7 +203,7 @@
                 var d = Math.pow(10, 5);
                 debug.innerHTML = "lat: " + Math.round(circle.getCenter().lat() * d) / d + "<br>";
                 debug.innerHTML += "lng: " + Math.round(circle.getCenter().lng() * d) / d + "<br>";
-                debug.innerHTML += "radius: " + Math.round(circle.getRadius()) + " m<br>";
+                // debug.innerHTML += "radius: " + Math.round(circle.getRadius()) + " m<br>";
             }
 
             update();
