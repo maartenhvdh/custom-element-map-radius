@@ -60,7 +60,6 @@
                 <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
                 <div id="map-canvas"></div>
                 <div id="debug"></div>
-
             </div>
         </div>
     </div>
@@ -69,7 +68,9 @@
 
         $(document).ready(function () {
             CustomElement.init((element, _context) => {
-
+                
+                googleMaps();
+                        updateSize();
                 const input = document.getElementById("pac-input");
 
                 CustomElement.getElementValue("location", (value) => {
@@ -80,8 +81,6 @@
                 });
                 CustomElement.getElementValue("state_zip_code", (value) => {
                     input.value = input.value + ", " + value
-                    googleMaps();
-                    updateSize();
                 });
 
                 CustomElement.observeElementChanges(["location"], (changedElementCodenames) => {
@@ -93,8 +92,6 @@
                     });
                     CustomElement.getElementValue("state_zip_code", (value) => {
                         input.value = input.value + ", " + value
-                        googleMaps();
-                        updateSize();
                     });
                 });
 
@@ -107,8 +104,6 @@
                     });
                     CustomElement.getElementValue("state_zip_code", (value) => {
                         input.value = input.value + ", " + value
-                        googleMaps();
-                        updateSize();
                     });
                 });
 
@@ -121,8 +116,6 @@
                     });
                     CustomElement.getElementValue("state_zip_code", (value) => {
                         input.value = input.value + ", " + value
-                        googleMaps();
-                        updateSize();
                     });
                 });
 
