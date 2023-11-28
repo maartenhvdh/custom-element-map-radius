@@ -97,7 +97,7 @@
             });
             CustomElement.getElementValue("state_zip_code", (value) => {
                 input.value = input.value + ", " + value
-                google.maps.event.trigger(autocomplete, 'place_changed');
+                google.maps.event.trigger(input, 'place_changed');
             });
         }
 
