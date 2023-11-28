@@ -96,11 +96,11 @@
             });
             CustomElement.getElementValue("state_zip_code", (value) => {
                 input.value = input.value + ", " + value                
-                googleMaps();
+                googleMaps(input.value);
             });
         }
 
-        function googleMaps() {
+        function googleMaps(value) {
             var canvas = document.getElementById('map-canvas');
             var myLatlng = new google.maps.LatLng(47.2389004, 8.7442319, 15);
 
@@ -115,7 +115,8 @@
             const input = document.getElementById("pac-input");
             console.log("autocomplete")
             const autocomplete = new google.maps.places.Autocomplete(input, mapOptions);
-            console.log(input)
+            console.log(input.value)
+            console.log(value)
             console.log(autocomplete)
             const searchBox = new google.maps.places.SearchBox(input);
 
