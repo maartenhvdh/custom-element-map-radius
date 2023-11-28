@@ -65,12 +65,6 @@
     </div>
 
     <script>
-        const event = new KeyboardEvent('keydown', {
-            key: 'Enter',
-            code: 'Enter',
-            which: 13,
-            keyCode: 13,
-        });
 
         $(document).ready(function () {
             CustomElement.init((element, _context) => {
@@ -103,7 +97,7 @@
             });
             CustomElement.getElementValue("state_zip_code", (value) => {
                 input.value = input.value + ", " + value
-                input.dispatchEvent(event);
+                input.dispatchEvent("places_changed");
             });
         }
 
