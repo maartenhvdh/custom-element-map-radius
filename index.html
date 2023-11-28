@@ -66,13 +66,14 @@
     </div>
 
     <script>
+        let location = ""
+        let city = ""
+        let state_zip_code = ""
+
         $(document).ready(function () {
             CustomElement.init((element, _context) => {
 
                 const input = document.getElementById("pac-input");
-                let location = ""
-                let city = ""
-                let state_zip_code = ""
 
                 CustomElement.getElementValue("location", (value) => {
                     console.log("location")
@@ -87,130 +88,131 @@
                 });
 
                 CustomElement.observeElementChanges(["location"], (changedElementCodenames) => {
-                    CustomElement.getElementValue("location", (value) => {                    
+                    CustomElement.getElementValue("location", (value) => {
                         location = value
                     });
                 });
 
                 CustomElement.observeElementChanges(["city"], (changedElementCodenames) => {
-                    CustomElement.getElementValue("city", (value) => {                    
+                    CustomElement.getElementValue("city", (value) => {
                         city = value
                     });
                 });
 
                 CustomElement.observeElementChanges(["state_zip_code"], (changedElementCodenames) => {
-                    CustomElement.getElementValue("state_zip_code", (value) => {                    
+                    CustomElement.getElementValue("state_zip_code", (value) => {
                         state_zip_code = value
                     });
                 });
 
-                input.value = location + ", " + city + ", " + state_zip_code     
+                console.log("location2")
+                input.value = location + ", " + city + ", " + state_zip_code
                 googleMaps();
-                updateSize();                
+                updateSize();
 
             });
         });
 
         function googleMaps() {
-                var canvas = document.getElementById('map-canvas');
-                var myLatlng = new google.maps.LatLng(47.2389004, 8.7442319, 15);
+            var canvas = document.getElementById('map-canvas');
+            var myLatlng = new google.maps.LatLng(47.2389004, 8.7442319, 15);
 
-                var mapOptions = {
-                    zoom: 13,
-                    center: myLatlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map(canvas, mapOptions);
+            var mapOptions = {
+                zoom: 13,
+                center: myLatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(canvas, mapOptions);
 
-                // Create the search box and link it to the UI element.
-                const input = document.getElementById("pac-input");
-                const searchBox = new google.maps.places.SearchBox(input);
+            // Create the search box and link it to the UI element.
+            const input = document.getElementById("pac-input");
+            const searchBox = new google.maps.places.SearchBox(input);
 
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                // Bias the SearchBox results towards current map's viewport.
-                map.addListener("bounds_changed", () => {
-                    searchBox.setBounds(map.getBounds());
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener("bounds_changed", () => {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            let markers = [];
+
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener("places_changed", () => {
+                const places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach((marker) => {
+                    marker.setMap(null);
                 });
+                markers = [];
 
-                let markers = [];
+                // For each place, get the icon, name and location.
+                const bounds = new google.maps.LatLngBounds();
 
-                // Listen for the event fired when the user selects a prediction and retrieve
-                // more details for that place.
-                searchBox.addListener("places_changed", () => {
-                    const places = searchBox.getPlaces();
-
-                    if (places.length == 0) {
+                places.forEach((place) => {
+                    if (!place.geometry || !place.geometry.location) {
+                        console.log("Returned place contains no geometry");
                         return;
                     }
 
-                    // Clear out the old markers.
-                    markers.forEach((marker) => {
-                        marker.setMap(null);
-                    });
-                    markers = [];
+                    const icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25),
+                    };
 
-                    // For each place, get the icon, name and location.
-                    const bounds = new google.maps.LatLngBounds();
-
-                    places.forEach((place) => {
-                        if (!place.geometry || !place.geometry.location) {
-                            console.log("Returned place contains no geometry");
-                            return;
-                        }
-
-                        const icon = {
-                            url: place.icon,
-                            size: new google.maps.Size(71, 71),
-                            origin: new google.maps.Point(0, 0),
-                            anchor: new google.maps.Point(17, 34),
-                            scaledSize: new google.maps.Size(25, 25),
-                        };
-
-                        // Create a marker for each place.
-                        markers.push(
-                            new google.maps.Marker({
-                                map,
-                                icon,
-                                title: place.name,
-                                position: place.geometry.location,
-                            }),
-                        );
-                        if (place.geometry.viewport) {
-                            // Only geocodes have viewport.
-                            bounds.union(place.geometry.viewport);
-                        } else {
-                            bounds.extend(place.geometry.location);
-                        }
-                    });
-                    map.fitBounds(bounds);
+                    // Create a marker for each place.
+                    markers.push(
+                        new google.maps.Marker({
+                            map,
+                            icon,
+                            title: place.name,
+                            position: place.geometry.location,
+                        }),
+                    );
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
                 });
+                map.fitBounds(bounds);
+            });
 
-                var circleOptions = {
-                    draggable: true,
-                    editable: true,
-                    strokeColor: '#eeeeee',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 1,
-                    fillColor: '#FF0000',
-                    fillOpacity: 0.15,
-                    map: map,
-                    center: myLatlng,
-                    radius: 2000
-                };
-                var circle = new google.maps.Circle(circleOptions);
+            var circleOptions = {
+                draggable: true,
+                editable: true,
+                strokeColor: '#eeeeee',
+                strokeOpacity: 0.8,
+                strokeWeight: 1,
+                fillColor: '#FF0000',
+                fillOpacity: 0.15,
+                map: map,
+                center: myLatlng,
+                radius: 2000
+            };
+            var circle = new google.maps.Circle(circleOptions);
 
-                google.maps.event.addListener(circle, 'center_changed', update);
-                google.maps.event.addListener(circle, 'radius_changed', update);
+            google.maps.event.addListener(circle, 'center_changed', update);
+            google.maps.event.addListener(circle, 'radius_changed', update);
 
-                function update() {
-                    var debug = document.getElementById("debug");
-                    var d = Math.pow(10, 5);
-                    debug.innerHTML = "lat: " + Math.round(circle.getCenter().lat() * d) / d + "<br>";
-                    debug.innerHTML += "lng: " + Math.round(circle.getCenter().lng() * d) / d + "<br>";
-                    debug.innerHTML += "radius: " + Math.round(circle.getRadius()) + " m<br>";
-                }
+            function update() {
+                var debug = document.getElementById("debug");
+                var d = Math.pow(10, 5);
+                debug.innerHTML = "lat: " + Math.round(circle.getCenter().lat() * d) / d + "<br>";
+                debug.innerHTML += "lng: " + Math.round(circle.getCenter().lng() * d) / d + "<br>";
+                debug.innerHTML += "radius: " + Math.round(circle.getRadius()) + " m<br>";
+            }
 
-                update();
+            update();
         }
 
         function updateSize() {
