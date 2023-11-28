@@ -89,6 +89,7 @@
 
         function getData() {
             const input = document.getElementById("pac-input");
+            var event = new CustomEvent("places_changed", {  });
             CustomElement.getElementValue("location", (value) => {
                 input.value = value
             });
@@ -97,7 +98,7 @@
             });
             CustomElement.getElementValue("state_zip_code", (value) => {
                 input.value = input.value + ", " + value
-                input.dispatchEvent("places_changed");
+                input.dispatchEvent(event);
             });
         }
 
