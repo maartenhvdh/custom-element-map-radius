@@ -175,32 +175,32 @@
                 map.fitBounds(bounds);
             });
 
-            var circleOptions = {
-                draggable: true,
-                editable: true,
-                strokeColor: '#eeeeee',
-                strokeOpacity: 0.8,
-                strokeWeight: 1,
-                fillColor: '#FF0000',
-                fillOpacity: 0.15,
-                map: map,
-                center: myLatlng,
-                radius: 2000
-            };
-            var circle = new google.maps.Circle(circleOptions);
+            // var circleOptions = {
+            //     draggable: true,
+            //     editable: true,
+            //     strokeColor: '#eeeeee',
+            //     strokeOpacity: 0.8,
+            //     strokeWeight: 1,
+            //     fillColor: '#FF0000',
+            //     fillOpacity: 0.15,
+            //     map: map,
+            //     center: myLatlng,
+            //     radius: 2000
+            // };
+            // var circle = new google.maps.Circle(circleOptions);
 
-            google.maps.event.addListener(circle, 'center_changed', update);
-            google.maps.event.addListener(circle, 'radius_changed', update);
+            // google.maps.event.addListener(circle, 'center_changed', update);
+            // google.maps.event.addListener(circle, 'radius_changed', update);
 
-            function update() {
-                var debug = document.getElementById("debug");
-                var d = Math.pow(10, 5);
-                debug.innerHTML = "lat: " + Math.round(circle.getCenter().lat() * d) / d + "<br>";
-                debug.innerHTML += "lng: " + Math.round(circle.getCenter().lng() * d) / d + "<br>";
-                // debug.innerHTML += "radius: " + Math.round(circle.getRadius()) + " m<br>";
-            }
+            // function update() {
+            //     var debug = document.getElementById("debug");
+            //     var d = Math.pow(10, 5);
+            //     debug.innerHTML = "lat: " + Math.round(circle.getCenter().lat() * d) / d + "<br>";
+            //     debug.innerHTML += "lng: " + Math.round(circle.getCenter().lng() * d) / d + "<br>";
+            //     // debug.innerHTML += "radius: " + Math.round(circle.getRadius()) + " m<br>";
+            // }
 
-            update();
+            // update();
         }
 
         function updateSize() {
